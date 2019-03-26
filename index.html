@@ -8,7 +8,7 @@
     <meta name="author" content="zcandee">
   
     <style>
-        body {font-family: "Tahoma MS",sans-serif;font-size:1.1em}
+        body {font-family: Tahoma,sans-serif;font-size:1.1em}
         section {display:block;max-width:40em;min-width:15em;margin:3em auto 0 auto;border:black solid 0.1em;text-align:center}
         h1 {float:left; padding:0 0.75em; margin:-0.75em 0 0 1em;background:#fff}
         p {font-size:3em}
@@ -59,38 +59,53 @@
     <script>
         var form = document.getElementById('entry');
         var result = document.getElementById('result');
+        
+        form.method='get';
+        
         document.getElementById('submitdate').value=new Date().toISOString(); 
         
-        form.onkeypress = function (e) {return e.keyCode != 13;}
+        form.onkeypress = function (e) {
+            return e.keyCode != 13;
+        }
+        
         form.onsubmit = function (e) {
             e.preventDefault();
             console.log(e);
             console.log(this.action);
-            console.log(this.data);
             
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", this.action); 
-            xhr.onload = function(e){ 
-                console.log(e);
-                form.reset();
-                var resp = JSON.parse(e.target.responseText);
-                if (resp['result']=="success") {
-                    result.className="success";
-                    result.innerHTML="Success! Thanks for playing!";
-                } else {
-                    result.className="error";
-                    result.innerHTML=resp['error'];
-                }
+            var callbackName = 'cb' + new Date().getTime()+Math.round(100000 * Math.random());
+            window[callbackName] = function(data) {
+                delete window[callbackName];
+                document.body.removeChild(script);
+                callback(data);
+            };
+            
+            var fd = '';
+            for (elem in form.elements) {
+                console.log(form.elements[elem]);
+                fd += (form.elements[elem].value?(fd?'&':'') + form.elements[elem].name +'='+form.elements[elem].value:'');
             }
-            xhr.onerror = function(e){ 
-                console.log(e);
-                form.reset();
-                result.className="error";
-                result.innerHTML="Something went wrong, try again later.";
-            }
-            xhr.send(new FormData(form));
+            console.log(fd);
+
+            var script = document.createElement('script');
+            script.src = this.action + (this.action.indexOf('?') >= 0 ? '&' : '?') + fd + '&cb=' + callbackName;
+            script.type= 'application/javascript';
+            document.body.appendChild(script);
             
             return false;
+        }
+        function callback (d) { 
+            console.log(d);
+            form.reset();
+            var resp = JSON.parse(d);
+           
+            if (resp['result']=="success") {
+                result.className="success";
+                result.innerHTML="Success! Thanks for playing!";
+            } else {
+                result.className="error";
+                result.innerHTML=resp['error'];
+            }
         }
     </script>
 </body>
