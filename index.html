@@ -60,7 +60,7 @@
         var form = document.getElementById('entry');
         var result = document.getElementById('result');
         
-        form.method='get';
+   //     form.method='get';
         
         document.getElementById('submitdate').value=new Date().toISOString(); 
         
@@ -68,7 +68,7 @@
             return e.keyCode != 13;
         }
         
-        form.onsubmit = function (e) {
+   /*     form.onsubmit = function (e) {
             e.preventDefault();
             console.log(e);
             console.log(this.action);
@@ -106,7 +106,7 @@
                 result.className="error";
                 result.innerHTML=resp['error'];
             }
-        }
+        }*/
     </script>
 </body>
 </html>
