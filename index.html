@@ -19,6 +19,10 @@
         form:invalid button[type=submit] {display: none;}
         input:invalid:not(:placeholder-shown) {border:solid red}
         input[name=email],input[name=submitdate] {position: absolute; top:-100px}
+        button {background:#fff; color:#000; border:#000 solid; min-width:5em; font-size:1.5em; padding:0.25em}
+        button:hover {background:#000; color:#fff; border:#fff solid}
+        #result.error {color:#f55}
+        #result.success {color:#5f5}
     </style>
 </head>
 
@@ -29,7 +33,7 @@
     </section>
     <section>
         <h1>Baby Pool</h1>
-        <form onkeypress="document.getElementById('submitdate').value=new Date().toISOString(); return event.keyCode != 13" method="post" action="https://script.google.com/macros/s/AKfycbzYYkJ3DHeEzkwnt29cQw6OREXV3aG6NiRACbPRiVbqVlke2DA/exec" >
+        <form id="entry" method="post" action="https://script.google.com/macros/s/AKfycbzYYkJ3DHeEzkwnt29cQw6OREXV3aG6NiRACbPRiVbqVlke2DA/exec" >
             <p><label for="contestant">Your Name:</label>
             <input type="email" name="email" placeholder="leave blank">
             <input id="contestant" name="contestant" placeholder="3 to 25 letters(A-Z only)" required pattern="[a-zA-Z -]{3,25}"></p>
@@ -48,8 +52,46 @@
             <p><label for="length"><i>Oliver's</i> Length (in inches):</label>
             <input type="number" id="length" name="length" placeholder="19.5" min=0 max=40></p>
             <input type="text" name="submitdate" id="submitdate">
-            <button id="submit" type="submit" value="submit">Submit</button>
+            <button id="submit" type="submit" value="submit">Submit</button><br>
+            <span id="result"></span>
         </form>
     </section>
+    <script>
+        var form = document.getElementById('entry');
+        var result = document.getElementById('result');
+        document.getElementById('submitdate').value=new Date().toISOString(); 
+        
+        form.onkeypress = function (e) {return e.keyCode != 13;}
+        form.onsubmit = function (e) {
+            e.preventDefault();
+            console.log(e);
+            console.log(this.action);
+            console.log(this.data);
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", this.action); 
+            xhr.onload = function(e){ 
+                console.log(e);
+                form.reset();
+                var resp = JSON.parse(e.target.responseText);
+                if (resp['result']=="success") {
+                    result.className="success";
+                    result.innerHTML="Success! Thanks for playing!";
+                } else {
+                    result.className="error";
+                    result.innerHTML=resp['error'];
+                }
+            }
+            xhr.onerror = function(e){ 
+                console.log(e);
+                form.reset();
+                result.className="error";
+                result.innerHTML="Something went wrong, try again later.";
+            }
+            xhr.send(new FormData(form));
+            
+            return false;
+        }
+    </script>
 </body>
 </html>
