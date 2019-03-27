@@ -62,7 +62,7 @@
 
         form.onkeypress = function (e) {
             result.className='';
-            result.innerHTML='';
+            result.textContent='';
             
             return e.keyCode != 13;
         }
@@ -79,10 +79,10 @@
                 if (data['result']=="success") {
                     form.reset();
                     result.className="success";
-                    result.innerHTML="Success! Thanks for playing!";
+                    result.textContent="Success! Thanks for playing!";
                 } else {
                     result.className="error";
-                    result.innerHTML=data['error'];
+                    result.textContent=data['error'];
                 }
             };
             
