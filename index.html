@@ -5,22 +5,39 @@
     <meta charset="utf-8">
     <meta name="robots" content="noindex,nofollow">
     <title>Fun-size Candee</title>
-    <meta name="description" content="Official status of Fun-size Candee's impending arrival.">
+    <meta name="description" content="Official status of the Fun-size Candee's impending arrival.">
     <meta name="author" content="zcandee">
-  
+
+    <link href="https://fonts.googleapis.com/css?family=Rubik:700;Lato:200&display=swap" rel="stylesheet">
     <style>
-        body {font-family: Tahoma,sans-serif;font-size:1.1em;color:#fff;background:#222;}
-        section {display:block;max-width:40em;min-width:15em;margin:3em auto 0 auto;border:#fff solid 0.1em;text-align:center}
-        h1 {float:left; padding:0 0.75em; margin:-0.75em 0 0 1em;background:#222}
+        body {font-family: Rubik,Tahoma,sans-serif;font-size:1.1em;color:#eee;background:#222;-webkit-animation: fadein 3s;}
+        section {display:block;max-width:40em;min-width:15em;margin:3em auto 0 auto;border:#f8f solid 0.1em;text-align:center}
+        h2 {float:left; padding:0 0.75em; margin:-0.75em 0 0 1em;background:#222; color:#8bf}
+        h1 {margin:auto 1em; font-size: 5em; max-width: 100vw;text-align: center; transform: translateY(-0%)}
+        h1 > span {display:inline-block; animation: dropout 5s 0s;font-size: 0.5em; margin: 0 -0.1em; color: #f8f}
+        h1 > span:first-child {margin:0.1em}
+        @keyframes fadein {
+          0% {opacity: 0;}
+          100% {opacity: 1;}
+        }
+        @keyframes dropout {
+          0%,55% {color: #eee; font-size: 1em; margin:0; transform-origin: 0.05em 0.95em; transform: rotate(0)}
+          60%    {color: #eee; font-size: 1em; margin:0; transform-origin: 0.05em 0.95em; transform: rotate(170deg)}
+          63%    {color: #eee; font-size: 1em; margin:0; transform-origin: 0.05em 0.95em; transform: rotate(110deg)}
+          65%    {color: #eee; font-size: 1em; margin:0; transform-origin: 0.05em 0.95em; transform: rotate(135deg)}
+          80%    {color: #eee; font-size: 0; margin:0.1em; transform-origin: 0.05em 0.95em; transform: translateY(50vh)}
+          81%    {color: #eee; font-size: 0; margin:0; transform-origin: 0.05em 0.95em; transform: none}
+          100%   {color: #f8f; font-size: 0.5em; margin: 0}
+        }
         p {font-size:3em}
         form {margin: 2em}
         form>p {font-size:1.1em; text-align:left}
-        form label {display:inline-block;max-width:50%}
-        form input,select {float:right;font-size:1.1em;display:inline-block;width:auto;min-width:50%;background:#555;color:#fff}
+        form label {display:inline-block;font-weight: 200;max-width:50%}
+        form input,select {float:right;font-size:1.1em;display:inline-block;width:auto;min-width:50%;background:#555;color:#eee}
         form:invalid button[type=submit] {display: none;}
         input:invalid:not(:placeholder-shown) {border:solid red}
         input[name=email],input[name=submitdate] {position: absolute; top:-100px}
-        button {background:#222; color:#fff; border:#fff solid; min-width:5em; font-size:1.5em; padding:0.25em}
+        button {background:#222; color:#eee; border:#eee solid; min-width:5em; font-size:1.5em; padding:0.25em}
         button:hover {background:#fff; color:#222; border:#222 solid}
         #result.error {color:#f55}
         #result.success {color:#282}
@@ -28,30 +45,31 @@
 </head>
 
 <body>
+    <h1>Funsize<span>.</span>Cand<span>.</span>ee</h1>
     <section>
-        <h1>Has <i>Fun-size</i> arrived?</h1>
+        <h2>Has <i>Fun-size</i> arrived?</h2>
         <p>Nope</p>
     </section>
     <section>
-        <h1>Baby Pool</h1>
+        <h2>Guesses &amp; Suggestions:</h2>
         <form id="entry" method="post" action="https://script.google.com/macros/s/AKfycbzYYkJ3DHeEzkwnt29cQw6OREXV3aG6NiRACbPRiVbqVlke2DA/exec" >
             <p><label for="contestant">Your Name:</label>
             <input type="email" name="email" placeholder="leave blank">
-            <input id="contestant" name="contestant" placeholder="3 to 25 letters(A-Z only)" required pattern="[a-zA-Z -]{3,25}"></p>
-            <p><label for="babyname"><i>Fun-size's</i> Official Name:</label>
-            <input id="babyname" name="babyname" placeholder="3 to 25 letters(A-Z only)" pattern="[a-zA-Z -]{3,25}"></p>
-            <p><label for="sex"><i>Fun-size's</i> Sex:</label>
+            <input id="contestant" name="contestant" placeholder="1 to 64 letters(A-Z only)" required pattern="[a-zA-Z -]{1,64}"></p>
+            <p><label for="babyname">Name:</label>
+            <input id="babyname" name="babyname" placeholder="1 to 64 letters(A-Z only)" pattern="[a-zA-Z -]{1,64}"></p>
+            <p><label for="sex">Gender:</label>
             <select id="sex" name="sex">
                 <option value="">Choose One...</option>
                 <option value="boy">Boy</option>
                 <option value="girl">Girl</option>
             </select></p>
-            <p><label for="birthday"><i>Fun-size's</i> Birthday:</label>
-            <input type="datetime-local" id="birthday" name="birthday"></p>
-            <p><label for="weight"><i>Fun-size's</i> Weight (in pounds):</label>
-            <input type="number" id="weight" name="weight" placeholder="7.5" step="0.01" min="0" max="20"></p>
-            <p><label for="length"><i>Fun-size's</i> Length (in inches):</label>
-            <input type="number" id="length" name="length" placeholder="19.5" step="0.01" min="0" max="40"></p>
+            <p><label for="birthday">Birthday:</label>
+            <input type="date" id="birthday" name="birthday" min="2020-04-14" max="2021-06-01"></p>
+            <p><label for="weight">Weight (in pounds):</label>
+            <input type="number" id="weight" name="weight" placeholder="7.05" step="0.01" min="0" max="20"></p>
+            <p><label for="length">Length (in inches):</label>
+            <input type="number" id="length" name="length" placeholder="19.5" step="0.1" min="0" max="40"></p>
             <input type="text" name="submitdate" id="submitdate">
             <button id="submit" type="submit" value="submit">Submit</button><br>
             <span id="result"></span>
@@ -64,15 +82,15 @@
         form.onkeypress = function (e) {
             result.className='';
             result.textContent='';
-            
+
             return e.keyCode != 13;
         }
-        
+
         form.onsubmit = function (e) {
             e.preventDefault();
 
             document.getElementById('submitdate').value=new Date().toISOString();
-            
+
             var callbackName = 'cb' + new Date().getTime()+Math.round(100000 * Math.random());
             window[callbackName] = function(data) {
                 delete window[callbackName];
@@ -86,7 +104,7 @@
                     result.textContent=data['error'];
                 }
             };
-            
+
             var fd = '';
             for (elem in form.elements) {
                 fd += (form.elements[elem].value?(form.elements[elem].name?(fd?'&':'') + form.elements[elem].name +'='+form.elements[elem].value:''):'');
@@ -96,7 +114,7 @@
             script.src = this.action + (this.action.indexOf('?') >= 0 ? '&' : '?') + fd + '&cb=' + callbackName;
             script.type= 'application/javascript';
             document.body.appendChild(script);
-            
+
             return false;
         }
     </script>
