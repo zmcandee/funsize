@@ -96,6 +96,7 @@
     <script>
         var form = document.getElementById('entry');
         var result = document.getElementById('result');
+        var submit = document.getElementById('submit');
 
         form.onkeypress = function (e) {
             result.className='';
@@ -108,6 +109,8 @@
             e.preventDefault();
 
             document.getElementById('submitdate').value=new Date().toISOString();
+            submit.textContent = "Processing...";
+            submit.disabled = true;
 
             var callbackName = 'cb' + new Date().getTime()+Math.round(100000 * Math.random());
             window[callbackName] = function(data) {
@@ -121,6 +124,8 @@
                     result.className="error";
                     result.textContent=data['error'];
                 }
+                submit.textContent = "Submit";
+                submit.disabled = false;
             };
 
             var fd = '';
