@@ -44,7 +44,7 @@
       input:invalid:not(:placeholder-shown) {border:solid red}
       input[name=email],label[for=email] {position:absolute; top:-100px}
       button {background:inherit; border:solid 2px; font-size:1.5em; min-width:5em; padding:0.25em}
-      button:hover {background:#222; border:solid 2px; color:#eee}
+      button:hover,button:focus {background:#222; border:solid 2px; color:#eee}
       #result {display:block; margin:0 1em}
       #result.error {color:#f55}
       #result.success {color:#282}
@@ -83,7 +83,7 @@
         <h2>Guesses &amp; Suggestions:</h2>
         <form id="entry" method="post" action="https://script.google.com/macros/s/AKfycbzuy0HY7pl1UAE5p4GDbS8s9Rn1kivGxNq1l1yC/exec" >
             <p><label for="email">Leave Blank:</label>
-            <input type="email" id="email" name="email" placeholder="leave blank">
+            <input type="email" id="email" name="email" placeholder="leave blank" tabindex="-1" aria-hidden="true">
             <label for="contestant">Your Name:</label>
             <input id="contestant" name="contestant" placeholder="1 to 64 letters(A-Z only)" required pattern="[a-zA-Z -]{1,64}"></p>
             <p><label for="babyname">Name:</label>
