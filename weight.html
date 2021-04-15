@@ -10,15 +10,16 @@
       form > div > label {display: block; width: 100%; padding: 0.5em; text-align: center}
       form > div > input {display: none}
       form > div > input:checked + label {background: black; color: white}
-      #weight {background: inherit; border: none; border-bottom: 4px solid; font-size: 2em; margin: 1em auto; padding: 0.5em}
-      #weight+label {font-size: 2em; padding: 0.5em}
-      input[type="submit"] {background: inherit; border: 4px solid; display: block; font-size: 1.2em; margin: 1em auto; padding: 0.5em}
-      input[type="submit"]:active {background: black; color: white; border: 4px solid; display: block; font-size: 1.2em; margin: 1em auto; padding: 0.5em}
+      #weight {background: inherit; border: none; border-bottom: 4px solid; font-size: 2.5em; margin: 1em auto; padding: 0.5em}
+      #weight+label {font-size: 2.5em; padding: 0.5em}
+      input[type="submit"] {background: inherit; border: currentColor 4px solid; display: block; font-size: 1.2em; margin: 1em auto; padding: 0.5em}
+      input[type="submit"]:active {background: black; color: white; border: gray 4px solid; display: block; font-size: 1.2em; margin: 1em auto; padding: 0.5em}
+      form:invalid > input[type="submit"], input[type="submit"]:disabled {color: gray}
     </style>
   </head>
   <body>
     <form method="post">
-      <input id="weight" name="weight" type="number" min="0.00" max="9999.00" step="0.1"  placeholder="0.0" autofocus>
+      <input id="weight" name="weight" type="number" min="0.00" max="9999.00" step="0.1"  placeholder="0.0" required autofocus>
       <label for="weight">lbs</label>
       <div>
         <input id="baby" name="type" type="radio" value="Baby" checked>
@@ -32,19 +33,53 @@
         <input id="daddy" name="type" type="radio" value="Daddy">
         <label for="daddy">Daddy</label>
       </div>
-      <input type="submit"/>
+      <input type="submit" value="Send">
     </form>
     <script>
+      const $ = s => document.querySelector(s);
       const urlParams = new URLSearchParams(window.location.search);
-      
+      const form = $("form");
+
       if (urlParams.has("id"))
         localStorage.setItem('id', urlParams.get("id"));
-      
-      const id=localStorage.getItem("id")
-      if (id)
-        document.querySelector("form").action = "https://script.google.com/macros/s/" + id + "/exec"
-      else
+
+      const id=localStorage.getItem("id");
+      if (id !== "") {
+        $("form").action = "https://script.google.com/macros/s/" + id + "/exec";
+      } else {
         alert("Missing ID. Try using a magic link.")
+      }
+
+      form.onsubmit = (e) => {
+        e.preventDefault();
+        const submit = $("input[type=\"submit\"]");
+
+        submit.value = "Processing...";
+        submit.disabled = true;
+
+        const callbackName = 'cb' + new Date().getTime()+Math.round(100000 * Math.random());
+        window[callbackName] = (data) => {
+          delete window[callbackName];
+          document.body.removeChild(script);
+          const form = $("form");
+          const submit = $("input[type=\"submit\"]")
+          if (data['result']=="success") {
+              form.reset();
+          }
+          submit.value = "Send";
+          submit.disabled = false;
+        }
+
+        let fd = new FormData(form);
+        let qs = new URLSearchParams(fd).toString();
+
+        var script = document.createElement('script');
+        script.src = form.action + (form.action.indexOf('?') >= 0 ? '&' : '?') + qs + '&cb=' + callbackName;
+        script.type= 'application/javascript';
+        document.body.appendChild(script);
+
+        return false;
+      }
     </script>
   </body>
 </html>
